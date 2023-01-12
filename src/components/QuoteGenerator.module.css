@@ -1,0 +1,60 @@
+.head {
+    margin: 0;
+    font-size: 26px;
+}
+
+.center {
+    margin-top: -100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    max-width: 800px;
+}
+
+.quoteWrapper {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    line-height: 1.8
+}
+.quote > h3{
+    margin: 0;
+    letter-spacing: 1px;
+    word-spacing: 3px;
+    text-align: center;
+}
+
+.quote > h3::after, .quote > h3::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.metaData {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+    gap: 30px;
+}
+
+.buttonWrapper {
+    caret-color: transparent;
+}
+
+.buttonWrapper > button{
+    cursor: pointer;
+    padding: 8px 16px;
+    font-weight: 500;
+    font-size: 22px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    background-color: transparent;
+    transition: all 0.2s ease;
+}
+
+.buttonWrapper > button:hover {
+    color: linear-gradient(90deg, rgba(115,201,252,1) 0%, rgba(130,238,255,1) 100%);
+    background-color: white;
+}
