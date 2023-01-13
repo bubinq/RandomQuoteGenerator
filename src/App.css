@@ -1,6 +1,7 @@
 body {
     margin: 0;
     font-family: "Source Sans Pro", sans-serif, monospace;
+    overflow: hidden;
 }
 .App {
     width: 100vw;

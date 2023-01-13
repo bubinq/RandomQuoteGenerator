@@ -1,16 +1,19 @@
 import styles from "../components/QuoteGenerator.module.css";
 import React, { useState, useRef, useEffect } from "react";
-import { url, key } from "../utils";
+import { url, key, utter } from "../utils";
 
 const QuoteGenerator = () => {
   const [quote, setQuote] = useState({ author: "", category: "", quote: "" });
   const [idx, setIdx] = useState(0);
+  const [isTyping, setIsTyping] = useState(false);
+  const [show, setShow] = useState(false);
 
   const element = useRef<HTMLHeadingElement>(null);
   let interval: number | undefined;
 
   async function handleGenerateQuote(ev: React.MouseEvent) {
     ev.preventDefault();
+    setIsTyping(true);
     if (element.current !== null) {
       element.current.textContent = "";
     }
@@ -20,17 +23,19 @@ const QuoteGenerator = () => {
     const response = await quote.json();
     setQuote.apply(null, response);
     setIdx(0);
+    utter(response[0]);
   }
 
   function typeWriter() {
     if (idx < quote.quote.length && element.current !== null) {
       element.current.textContent += quote.quote.charAt(idx);
       setIdx((a) => a + 1);
+    } else {
+      setIsTyping(false);
     }
   }
   useEffect(() => {
-    console.log("rerender");
-    interval = setTimeout(typeWriter, 66);
+    interval = setTimeout(typeWriter, Math.random() * (60 - 30) + 30);
     return () => {
       clearInterval(interval);
     };
@@ -41,13 +46,39 @@ const QuoteGenerator = () => {
 
       <div className={styles.quoteWrapper}>
         <div className={styles.quote}>
-          <h3 ref={element}></h3>
+          <h3 className={styles.cursor} ref={element}></h3>
         </div>
       </div>
 
       <div className={styles.metaData}>
         <div className={styles.author}>
-          <span>Author: {quote.author}</span>
+          <span>
+            Author:{" "}
+            <a
+              className={styles.anchor}
+              target="_blank"
+              onMouseEnter={() => {
+                setShow(true);
+              }}
+              onMouseLeave={() => {
+                setShow(false);
+              }}
+              href={`https://en.wikipedia.org/wiki/${quote.author.replaceAll(
+                " ",
+                "_"
+              )}`}
+            >
+              {quote.author}
+              <iframe
+                className={styles.description}
+                style={{ opacity: show ? "1" : "0" }}
+                src={`https://en.wikipedia.org/wiki/${quote.author.replaceAll(
+                  " ",
+                  "_"
+                )}`}
+              ></iframe>
+            </a>
+          </span>
         </div>
         <div className={styles.category}>
           <span>Category: {quote.category}</span>
@@ -55,7 +86,9 @@ const QuoteGenerator = () => {
       </div>
 
       <div className={styles.buttonWrapper}>
-        <button onClick={handleGenerateQuote}>Generate</button>
+        <button onClick={handleGenerateQuote} disabled={isTyping}>
+          Generate
+        </button>
       </div>
     </div>
   );
