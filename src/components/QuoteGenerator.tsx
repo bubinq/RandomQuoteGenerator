@@ -71,7 +71,7 @@ const QuoteGenerator = () => {
               {quote.author}
               <iframe
                 className={styles.description}
-                style={{ opacity: show ? "1" : "0" }}
+                style={{ display: show ? "block" : "none" }}
                 src={`https://en.wikipedia.org/wiki/${quote.author.replaceAll(
                   " ",
                   "_"
